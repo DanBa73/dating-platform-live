@@ -1,0 +1,206 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <style type="text/css">
+        .form-row {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .form-row label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-row input[type="text"],
+        .form-row textarea,
+        .form-row select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-row textarea {
+            min-height: 150px;
+        }
+        .checkbox-group {
+            margin-top: 10px;
+        }
+        .checkbox-group label {
+            font-weight: normal;
+            display: inline;
+            margin-left: 5px;
+        }
+        .submit-row {
+            padding: 10px;
+            margin-top: 15px;
+            text-align: right;
+        }
+        .preview-count {
+            font-size: 1.2em;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        .help-text {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div id="content-main">
+        <h1>Massennachrichten senden</h1>
+        
+        <p>Mit diesem Formular können Sie Nachrichten an mehrere Benutzer gleichzeitig senden.</p>
+        
+        <form action="" method="post">
+            {% csrf_token %}
+            
+            {% if error_message %}
+                <p class="errornote">{{ error_message }}</p>
+            {% endif %}
+            
+            <div class="form-row">
+                <label for="message_text">Nachrichtentext:</label>
+                <textarea name="message_text" id="message_text" required></textarea>
+                <p class="help-text">Geben Sie hier den Text ein, der an alle ausgewählten Benutzer gesendet werden soll.</p>
+            </div>
+            
+            <div class="form-row">
+                <label for="sender_profile">Absender (Fake-Profil):</label>
+                <select name="sender_profile" id="sender_profile" required>
+                    <option value="">-- Bitte wählen --</option>
+                    {% for profile in fake_profiles %}
+                        <option value="{{ profile.id }}">{{ profile.username }} (ID: {{ profile.id }})</option>
+                    {% endfor %}
+                </select>
+                <p class="help-text">Wählen Sie das Fake-Profil aus, von dem die Nachrichten gesendet werden sollen.</p>
+            </div>
+            
+            <fieldset class="form-row">
+                <legend>Filterkriterien:</legend>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" name="all_users" id="all_users" value="1">
+                    <label for="all_users">Alle Benutzer</label>
+                    <p class="help-text">Wenn aktiviert, werden alle anderen Filter ignoriert.</p>
+                </div>
+                
+                <div class="form-row">
+                    <label for="activity_period">Aktivitätszeitraum:</label>
+                    <select name="activity_period" id="activity_period">
+                        <option value="">Keine Einschränkung</option>
+                        <option value="7">In den letzten 7 Tagen aktiv</option>
+                        <option value="30">Im letzten Monat aktiv</option>
+                        <option value="90">In den letzten 3 Monaten aktiv</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <label for="gender">Geschlecht:</label>
+                    <select name="gender" id="gender">
+                        <option value="">Alle</option>
+                        <option value="MALE">Männlich</option>
+                        <option value="FEMALE">Weiblich</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <label for="region">Region/PLZ (erste Ziffer):</label>
+                    <select name="region" id="region">
+                        <option value="">Alle</option>
+                        <option value="0">0xxxx</option>
+                        <option value="1">1xxxx</option>
+                        <option value="2">2xxxx</option>
+                        <option value="3">3xxxx</option>
+                        <option value="4">4xxxx</option>
+                        <option value="5">5xxxx</option>
+                        <option value="6">6xxxx</option>
+                        <option value="7">7xxxx</option>
+                        <option value="8">8xxxx</option>
+                        <option value="9">9xxxx</option>
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <label for="user_type">Benutzertyp:</label>
+                    <select name="user_type" id="user_type">
+                        <option value="real">Nur echte Benutzer</option>
+                        <option value="fake">Nur Fake-Profile</option>
+                        <option value="all">Alle Benutzer</option>
+                    </select>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" name="no_conversations" id="no_conversations" value="1">
+                    <label for="no_conversations">Nur Benutzer ohne aktive Gespräche</label>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" name="never_messaged" id="never_messaged" value="1">
+                    <label for="never_messaged">Nur Benutzer, die noch nie eine Nachricht erhalten haben</label>
+                </div>
+            </fieldset>
+            
+            <div class="form-row">
+                <button type="button" id="preview_button" class="button">Vorschau anzeigen</button>
+                <div id="preview_count" class="preview-count" style="display: none;">
+                    Die Nachricht wird an <span id="user_count">0</span> Benutzer gesendet.
+                </div>
+            </div>
+            
+            <div class="submit-row">
+                <input type="submit" value="Nachrichten senden" class="default" name="send_messages">
+            </div>
+        </form>
+    </div>
+    
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const previewButton = document.getElementById('preview_button');
+            const previewCount = document.getElementById('preview_count');
+            const userCountSpan = document.getElementById('user_count');
+            const allUsersCheckbox = document.getElementById('all_users');
+            
+            // Funktion zum Aktualisieren der Vorschau
+            previewButton.addEventListener('click', function() {
+                // Formular-Daten sammeln
+                const formData = new FormData(document.querySelector('form'));
+                
+                // AJAX-Anfrage senden
+                fetch('{% url "admin:mass_message_preview" %}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        userCountSpan.textContent = data.user_count;
+                        previewCount.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error('Fehler:', error);
+                    alert('Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.');
+                });
+            });
+            
+            // Wenn "Alle Benutzer" ausgewählt ist, andere Filter deaktivieren
+            allUsersCheckbox.addEventListener('change', function() {
+                const filterInputs = document.querySelectorAll('fieldset select, fieldset input:not(#all_users)');
+                filterInputs.forEach(input => {
+                    input.disabled = this.checked;
+                });
+            });
+        });
+    </script>
+{% endblock %}

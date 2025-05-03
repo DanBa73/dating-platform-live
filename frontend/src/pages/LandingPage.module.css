@@ -1,0 +1,104 @@
+/* frontend/src/pages/LandingPage.module.css */
+
+/* Styles spezifisch für die Landing Page Inhalte */
+
+.landingMainContent {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+.landingHeadline {
+  margin: 0;
+  margin-bottom: 4vh;
+  font-size: 2.8em;
+  font-weight: bold;
+  color: #e8e8e8;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+}
+
+.landingBox {
+  background-color: rgba(255, 255, 255, 0.45);
+  color: #333;
+  padding: 30px 40px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-align: left;
+  margin: 0;
+  margin-bottom: 4vh;
+}
+
+.landingBox h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.2em;
+}
+
+.genderSelection, .seekingSelection {
+    margin-bottom: 25px;
+}
+
+.genderSelection label, .seekingSelection label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 1.4em;
+}
+
+.options {
+    display: flex;
+    gap: 15px;
+}
+
+/* NEU: Basis-Styling für die Auswahl-Buttons über Klasse statt Element-Selektor */
+.optionsButton {
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  background-color: #eee;
+  color: #333; /* Explizite Textfarbe für nicht-aktiven Zustand */
+  cursor: pointer;
+  border-radius: 4px;
+  flex-grow: 1;
+  font-size: 1.1em;
+  font-weight: bold;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s; /* Übergang hinzufügen */
+}
+
+/* NEU: Styling für den AKTIVEN Auswahl-Button */
+.activeOption {
+  background-color: #555; /* Gleiche Farbe wie findButton */
+  color: white;
+  border-color: #444; /* Etwas dunklerer Rand */
+}
+
+
+.findButton {
+    background-color: #555; /* Farbe anpassen! */
+    color: white;
+    font-weight: bold;
+    margin-top: 15px;
+    width: 100%;
+    border: none;
+    font-size: 1.3em;
+    padding: 15px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+.landingFooterText {
+  margin: 0;
+  font-size: 2.8em;
+  font-weight: bold;
+  color: #e8e8e8;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+}

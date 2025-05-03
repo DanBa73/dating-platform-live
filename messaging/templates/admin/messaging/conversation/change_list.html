@@ -1,0 +1,109 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_list %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static "admin/css/changelists.css" %}">
+  <style>
+    .conversation-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .conversation-table th, .conversation-table td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    .conversation-table th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+    .conversation-table tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    .conversation-table tr:hover {
+      background-color: #f5f5f5;
+    }
+    .ai-mode-form {
+      display: flex;
+      align-items: center;
+    }
+    .ai-mode-form select {
+      margin-right: 10px;
+    }
+    .message-preview {
+      max-width: 300px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .timestamp {
+      white-space: nowrap;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+  <div class="module filtered">
+    <h2>Konversationsübersicht</h2>
+    <p>Hier können Sie alle Konversationen zwischen echten und Fake-Benutzern sehen und die KI-Einstellungen direkt ändern.</p>
+    
+    <table class="conversation-table">
+      <thead>
+        <tr>
+          <th>Echter Benutzer</th>
+          <th>Fake-Benutzer</th>
+          <th>Nachrichten</th>
+          <th>Letzte Nachricht</th>
+          <th>Zeitpunkt</th>
+          <th>KI-Modus</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for conversation in conversations %}
+          <tr>
+            <td>{{ conversation.real_user.username }}</td>
+            <td>{{ conversation.fake_user.username }}</td>
+            <td>{{ conversation.message_count }}</td>
+            <td class="message-preview">
+              {% if conversation.last_message %}
+                <strong>{{ conversation.last_message.sender.username }}:</strong> {{ conversation.last_message.content }}
+              {% else %}
+                <em>Keine Nachrichten</em>
+              {% endif %}
+            </td>
+            <td class="timestamp">
+              {% if conversation.last_message %}
+                {{ conversation.last_message.timestamp|date:"d.m.Y H:i" }}
+              {% else %}
+                -
+              {% endif %}
+            </td>
+            <td>
+              <form method="post" action="{% url 'admin:update_ai_mode' %}" class="ai-mode-form">
+                {% csrf_token %}
+                <input type="hidden" name="real_user_id" value="{{ conversation.real_user.id }}">
+                <input type="hidden" name="fake_user_id" value="{{ conversation.fake_user.id }}">
+                <select name="ai_mode">
+                  {% for mode in ai_modes %}
+                    <option value="{{ mode.value }}" {% if mode.value == conversation.ai_mode %}selected{% endif %}>
+                      {{ mode.display }}
+                    </option>
+                  {% endfor %}
+                </select>
+                <button type="submit" class="button">Ändern</button>
+              </form>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="6">Keine Konversationen gefunden.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

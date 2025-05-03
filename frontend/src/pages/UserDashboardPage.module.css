@@ -1,0 +1,285 @@
+/* frontend/src/pages/UserDashboardPage.module.css */
+
+/* Basis-Container für das Dashboard */
+.dashboardContainer {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Überschriften */
+.dashboardTitle {
+    font-size: 2rem;
+    color: #f0f0f0; /* Helle Farbe für besseren Kontrast auf dunklem Hintergrund */
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.dashboardSubtitle {
+    font-size: 1.1rem;
+    color: #e0e0e0; /* Helle Farbe für besseren Kontrast auf dunklem Hintergrund */
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.sectionTitle {
+    font-size: 1.5rem;
+    color: #f0f0f0; /* Helle Farbe für besseren Kontrast auf dunklem Hintergrund */
+    margin: 2rem 0 1rem;
+    text-align: center;
+}
+
+/* Styling für Textmeldungen */
+.loadingMessage, .infoMessage, .errorMessage {
+    text-align: center;
+    padding: 1.5rem;
+    margin: 1.5rem auto;
+    border-radius: 8px;
+    max-width: 600px;
+    box-sizing: border-box;
+}
+.errorMessage {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+}
+.infoMessage {
+    color: #dddddd;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.loadingMessage {
+    color: #d1ecf1;
+    background-color: rgba(209, 236, 241, 0.1);
+    border: 1px solid rgba(190, 229, 235, 0.3);
+}
+
+/* Styling für Zurück-Link */
+.backLinkContainer {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.backLink {
+    color: #cccccc;
+    text-decoration: none;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    transition: color 0.2s;
+}
+
+.backLink:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* Styling für den Filterbereich */
+.filterContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-end;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filterGroup {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-width: 150px;
+}
+
+.filterGroup label {
+    margin-bottom: 0.3rem;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #f0f0f0; /* Helle Farbe für besseren Kontrast auf dunklem Hintergrund */
+    text-align: left;
+}
+
+/* Gemeinsames Styling für Inputs und Selects im Filter */
+.filterInput,
+.filterSelect {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    font-size: 0.95em;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #f0f0f0;
+    font-family: inherit;
+}
+
+.filterSelect:disabled {
+    background-color: rgba(255, 255, 255, 0.05);
+    cursor: not-allowed;
+}
+
+/* Styling für den Filter-Button */
+.filterButton {
+    padding: 8px 20px;
+    font-size: 0.95em;
+    font-weight: 600;
+    color: white;
+    background-color: #9d8eee; /* Lila */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    height: fit-content;
+    white-space: nowrap;
+}
+.filterButton:hover {
+    background-color: #8a7ad8; /* Dunkleres Lila */
+}
+
+
+/* Grid-Layout für Vorschläge */
+.suggestionGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.5rem;
+    padding: 0.5rem 0 1.5rem 0;
+}
+
+/* Styling für Karten */
+.suggestionCardLink {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    height: 100%;
+    border-radius: 8px;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+.suggestionCardLink:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+.suggestionCard {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.profilePicContainer {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+.profilePic {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.profilePicPlaceholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+.userInfo {
+    padding: 0.8rem 0.6rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.username {
+    font-weight: 600;
+    font-size: 1.1em;
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 5px;
+    color: #f0f0f0;
+}
+.details {
+    font-size: 0.9em;
+    color: #cccccc;
+}
+
+/* Button zum Nachladen */
+.loadMoreButton {
+    display: block;
+    margin: 2rem auto;
+    padding: 10px 22px;
+    font-size: 1em;
+    font-weight: 600;
+    color: white;
+    background-color: #9d8eee; /* Lila */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.loadMoreButton:hover {
+    background-color: #8a7ad8; /* Dunkleres Lila */
+}
+
+/* Styling für Favoriten-Karten */
+.favoriteCard {
+    position: relative;
+}
+
+.removeFavoriteButton {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.8rem;
+    opacity: 0.7;
+    transition: opacity 0.2s, background-color 0.2s;
+    z-index: 2;
+}
+
+.removeFavoriteButton:hover {
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Responsive Anpassungen */
+@media (max-width: 768px) {
+    .filterContainer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filterButton {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+    
+    .suggestionGrid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 1rem;
+    }
+}

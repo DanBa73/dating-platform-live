@@ -1,0 +1,104 @@
+/* frontend/src/components/Layout.module.css (Umstrukturiert) */
+
+/* Hauptcontainer für das Layout - NUR STRUKTUR */
+.layoutContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Klasse für den Bild-Hintergrund */
+.backgroundImage {
+  background-image: url('/landing-background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #e8e8e8; /* Helle Textfarbe für dunkles Bild */
+}
+
+/* Klasse für den einfarbigen Hintergrund */
+.solidBackground {
+  background-image: none;
+  /* Zurück zur ursprünglichen Orchid-Farbe für Benutzer-Seiten */
+  background-color: #7A378B; /* MediumOrchid4 */
+  /* Textfarbe auf Hell geändert für Kontrast */
+  color: #f0f0f0; /* Helles Grau / Fast Weiß */
+}
+
+/* Neue Klasse für Moderator-Seiten mit grauem Hintergrund */
+.moderatorBackground {
+  background-image: none;
+  /* Hintergrundfarbe auf ein neutrales Grau für Moderator-Seiten */
+  background-color: #f0f0f0; /* Helles Grau */
+  /* Textfarbe auf Dunkel geändert für Kontrast */
+  color: #333333; /* Dunkles Grau */
+}
+
+
+/* Header-Styling */
+.layoutHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 40px;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #f8f9fa;
+  flex-shrink: 0;
+}
+.layoutHeader span {
+    font-weight: bold;
+    font-size: 1.2em;
+    display: inline-flex;
+    align-items: center;
+    color: inherit;
+}
+.layoutHeader a {
+  color: #f0f0f0;
+  text-decoration: none;
+  margin-left: 15px;
+  font-size: 1.1em;
+}
+.layoutHeader a:hover {
+  color: white;
+}
+
+/* Neue Klasse für Header-Links */
+.headerLink {
+  color: #f0f0f0;
+  text-decoration: none;
+  margin-right: 15px;
+  font-size: 1.1em;
+}
+.headerLink:hover {
+  color: white;
+}
+
+
+/* Styling für den Logout-Button */
+.logoutButton {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  margin-left: 15px;
+  color: #f0f0f0;
+  font: inherit;
+  font-size: 1.1em;
+  cursor: pointer;
+  text-decoration: none;
+  vertical-align: middle;
+  display: inline-flex;
+  align-items: center;
+}
+.logoutButton:hover {
+  color: white;
+}
+
+
+/* Hauptinhaltsbereich im Layout */
+.layoutMain {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
