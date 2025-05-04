@@ -54,14 +54,18 @@ TEMPLATES = [ { # ... (Template Settings unverändert) ...
 WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
-DATABASES = { # ... (DB Settings unverändert) ...
+DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.mysql',  # Geändert für MariaDB/MySQL
         'NAME': os.getenv('DATABASE_NAME', 'dating_platform_db'),
-        'USER': os.getenv('DATABASE_USER', 'postgres'),
+        'USER': os.getenv('DATABASE_USER', 'root'),  # Standard-MySQL-Benutzer
         'PASSWORD': os.getenv('DATABASE_PASSWORD'),
         'HOST': os.getenv('DATABASE_HOST', 'localhost'),
-        'PORT': os.getenv('DATABASE_PORT', '5432'),
+        'PORT': os.getenv('DATABASE_PORT', '3306'),  # Standard-MySQL-Port
+        'OPTIONS': {
+            'charset': 'utf8mb4',  # Vollständige UTF-8-Unterstützung für Emojis etc.
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",  # Strikte SQL-Modus für bessere Kompatibilität
+        }
     }
 }
 if not DATABASES['default']['PASSWORD']: raise ValueError("FEHLER: DATABASE_PASSWORD nicht gefunden!")

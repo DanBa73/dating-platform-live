@@ -6,7 +6,8 @@ django-allauth>=0.54.0
 django-filter>=23.1
 
 # Datenbank
-psycopg2-binary>=2.9.6  # Für PostgreSQL (optional)
+# psycopg2-binary>=2.9.6  # Für PostgreSQL (optional) - auskommentiert für MariaDB/MySQL
+mysqlclient>=2.1.1  # Für MariaDB/MySQL
 
 # Webserver
 gunicorn>=20.1.0  # Für Produktionsumgebungen
