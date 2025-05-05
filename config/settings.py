@@ -7,15 +7,16 @@ Django settings for config project.
 
 from pathlib import Path
 import os
+import dj_database_url
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
-SECRET_KEY = os.getenv('SECRET_KEY')
-if not SECRET_KEY: raise ValueError("FEHLER: SECRET_KEY nicht gefunden!")
+# Wichtige Umgebungsvariablen
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-default-key-for-development')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = [] # Später ggf. anpassen
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 # Application definition
 INSTALLED_APPS = [
@@ -54,21 +55,25 @@ TEMPLATES = [ { # ... (Template Settings unverändert) ...
 WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',  # Geändert für MariaDB/MySQL
-        'NAME': os.getenv('DATABASE_NAME', 'dating_platform_db'),
-        'USER': os.getenv('DATABASE_USER', 'root'),  # Standard-MySQL-Benutzer
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-        'HOST': os.getenv('DATABASE_HOST', 'localhost'),
-        'PORT': os.getenv('DATABASE_PORT', '3306'),  # Standard-MySQL-Port
-        'OPTIONS': {
-            'charset': 'utf8mb4',  # Vollständige UTF-8-Unterstützung für Emojis etc.
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",  # Strikte SQL-Modus für bessere Kompatibilität
+# Verwende dj-database-url für die Datenbankkonfiguration
+# Dies unterstützt die DATABASE_URL-Umgebungsvariable, die von Render.com bereitgestellt wird
+DATABASE_URL = os.getenv('DATABASE_URL')
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL)
+    }
+else:
+    # Fallback für lokale Entwicklung
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('DATABASE_NAME', 'dating_platform_db'),
+            'USER': os.getenv('DATABASE_USER', 'postgres'),
+            'PASSWORD': os.getenv('DATABASE_PASSWORD', ''),
+            'HOST': os.getenv('DATABASE_HOST', 'localhost'),
+            'PORT': os.getenv('DATABASE_PORT', '5432'),
         }
     }
-}
-if not DATABASES['default']['PASSWORD']: raise ValueError("FEHLER: DATABASE_PASSWORD nicht gefunden!")
 
 
 # Password validation
