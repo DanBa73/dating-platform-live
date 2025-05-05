@@ -1,19 +1,29 @@
-# config/urls.py (Bereinigt und mit include für accounts.urls)
+# config/urls.py (Mit React index.html Serving)
 
 """
 URL configuration for config project.
 # ... (Docstring bleibt gleich) ...
 """
 from django.contrib import admin
-# 'include' wird jetzt verwendet
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+# --- NEU: Import für TemplateView ---
+from django.views.generic import TemplateView
+# --- ENDE NEU ---
 
-# --- Imports für Views aus accounts ENTFERNT ---
-# Die Views werden jetzt nur noch in accounts/urls.py benötigt
 
 urlpatterns = [
+    # --- NEU: Pfad für die React App index.html ---
+    # Dieser Pfad fängt alle Anfragen ab, die nicht zu API oder Admin gehören
+    # und liefert die index.html aus. React Router übernimmt dann das Routing im Frontend.
+    # Wichtig: Dieser Pfad sollte NACH spezifischeren Pfaden wie 'admin/' oder 'api/' stehen,
+    # aber wir setzen ihn oft nach vorne zur Verdeutlichung des Catch-All für das Frontend.
+    # Django sucht 'index.html' in den Template-Verzeichnissen bzw. über den Staticfiles Finder
+    # nach collectstatic.
+    # UPDATE: Es ist oft sicherer, diesen Catch-All weiter unten zu platzieren,
+    # damit spezifische URLs wie /admin/ Vorrang haben. Wir verschieben ihn nach unten.
+
     # Django Admin Interface
     path('admin/', admin.site.urls),
 
@@ -24,31 +34,30 @@ urlpatterns = [
     path('api/auth/', include('dj_rest_auth.urls')),
     path('api/auth/registration/', include('dj_rest_auth.registration.urls')),
 
-    # --- NEU: Alle URLs für die accounts-App gebündelt ---
-    # Alle URLs, die in accounts/urls.py definiert sind, werden
-    # unter dem Präfix 'api/accounts/' verfügbar gemacht.
-    # Der Namespace 'accounts' ist optional, aber nützlich.
+    # --- Alle URLs für die accounts-App gebündelt ---
     path('api/accounts/', include('accounts.urls', namespace='accounts')),
-    # --- ENDE accounts-App URLs ---
 
-    # --- NEU: URLs für die notifications-App ---
+    # --- URLs für die notifications-App ---
     path('api/notifications/', include('notifications.urls', namespace='notifications')),
-    # --- ENDE notifications-App URLs ---
-
 
     # --- URLs für User-spezifische Daten (VERSCHOBEN nach accounts/urls.py) ---
-    # path('api/users/<int:user_id>/notes/', UserNotesView.as_view(), name='user-notes'),
-    # path('api/users/<int:user_id>/profile-images/', UserProfileImageViewList.as_view(), name='user-profile-image-list'),
-    # path('api/users/<int:user_id>/profile/', UserProfileDetailView.as_view(), name='user-profile-detail'),
-    # --- ENDE User-spezifische URLs ---
+    # ... (auskommentierte Pfade bleiben) ...
 
     # --- URLs für Profilbilder (allgemein) (VERSCHOBEN nach accounts/urls.py) ---
-    # path('api/profile-images/', ProfileImageUploadView.as_view(), name='profile-image-upload'),
-    # path('api/profile-images/<int:pk>/', ProfileImageDeleteView.as_view(), name='profile-image-delete'),
-    # --- ENDE Profilbild URLs ---
+    # ... (auskommentierte Pfade bleiben) ...
 
     # DRF Login/Logout für Browsable API (unverändert)
     path('api-auth/', include('rest_framework.urls')),
+
+    # --- NEU: Pfad für die React App index.html (Bessere Position: nach API-Pfaden) ---
+    # Fängt die Root-URL ab und liefert die index.html für die React App
+    path('', TemplateView.as_view(template_name='index.html'), name='react-app'),
+
+    # Optional: Ein Catch-All für React-Router, falls Deep-Links unterstützt werden sollen.
+    # Muss als ALLERLETZTES stehen. Requires re_path from django.urls
+    # from django.urls import re_path
+    # re_path(r'^(?!api/|admin/|media/).*$', TemplateView.as_view(template_name='index.html'), name='react-catchall'),
+
 ]
 
 # Media Files im Development-Modus ausliefern (unverändert)
