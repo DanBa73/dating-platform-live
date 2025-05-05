@@ -4,31 +4,22 @@ djangorestframework>=3.14.0
 django-cors-headers>=4.0.0
 django-allauth>=0.54.0
 django-filter>=23.1
-dj-rest-auth>=4.0.0
-dj-database-url>=2.0.0
-
-# Datenbank
-psycopg2-binary>=2.9.6  # Für PostgreSQL
-
+dj-rest-auth # Hinzugefügt
+django-background-tasks # Hinzugefügt
+# Datenbank (PostgreSQL für Render)
+psycopg2-binary>=2.9.6 # Aktiviert
+dj-database-url>=2.1.0 # Hinzugefügt (Für DATABASE_URL)
 # Webserver
-gunicorn>=20.1.0  # Für Produktionsumgebungen
-
-# Hintergrund-Tasks
-django-background-tasks>=1.2.5
-
-# OpenAI
-openai>=0.27.0
-
+gunicorn>=20.1.0
 # Für Profilbild-Downloader
 requests>=2.28.2
 beautifulsoup4>=4.12.0
 lxml>=4.9.2
-Pillow>=9.5.0  # Für Bildverarbeitung
-
+Pillow>=9.5.0
 # Für Selenium-Unterstützung (optional)
 selenium>=4.9.0
 webdriver-manager>=3.8.6
-
 # Utilities
-python-dotenv>=1.0.0  # Für Umgebungsvariablen
-tqdm>=4.65.0  # Für Fortschrittsbalken
+python-dotenv>=1.0.0 # Behalten
+tqdm>=4.65.0
+openai # Hinzugefügt
