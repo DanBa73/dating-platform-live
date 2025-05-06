@@ -6,6 +6,7 @@ django-allauth>=0.54.0
 django-filter>=23.1
 dj-rest-auth # Hinzugefügt
 django-background-tasks # Hinzugefügt
+whitenoise>=6.5.0 # Hinzugefügt für statische Dateien in Produktion
 # Datenbank (PostgreSQL für Render)
 psycopg2-binary>=2.9.6 # Aktiviert
 dj-database-url>=2.1.0 # Hinzugefügt (Für DATABASE_URL)

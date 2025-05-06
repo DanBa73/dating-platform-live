@@ -41,8 +41,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    # Whitenoise für Static Files (oft nützlich hinter Gunicorn) - Optional, falls gebraucht
-    # 'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware', # CorsMiddleware hinzugefügt
     'django.middleware.common.CommonMiddleware',
@@ -108,8 +107,8 @@ STATICFILES_DIRS = [
 ]
 # --- ENDE NEU ---
 
-# Optional: Whitenoise Konfiguration für statische Dateien direkt über Gunicorn/Django
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Whitenoise Konfiguration für statische Dateien direkt über Gunicorn/Django
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
