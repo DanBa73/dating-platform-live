@@ -5,7 +5,7 @@ URL configuration for config project.
 # ... (Docstring bleibt gleich) ...
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 # --- NEU: Import für TemplateView ---
@@ -49,14 +49,8 @@ urlpatterns = [
     # DRF Login/Logout für Browsable API (unverändert)
     path('api-auth/', include('rest_framework.urls')),
 
-    # --- NEU: Pfad für die React App index.html (Bessere Position: nach API-Pfaden) ---
-    # Fängt die Root-URL ab und liefert die index.html für die React App
-    path('', TemplateView.as_view(template_name='index.html'), name='react-app'),
-
-    # Optional: Ein Catch-All für React-Router, falls Deep-Links unterstützt werden sollen.
-    # Muss als ALLERLETZTES stehen. Requires re_path from django.urls
-    # from django.urls import re_path
-    # re_path(r'^(?!api/|admin/|media/).*$', TemplateView.as_view(template_name='index.html'), name='react-catchall'),
+    # Catch-All für React Router - MUSS AM ENDE STEHEN
+    re_path(r'^(?!api/|admin/|static/|media/).*$', TemplateView.as_view(template_name='index.html'), name='react-router-catchall'),
 
 ]
 
