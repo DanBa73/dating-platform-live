@@ -46,6 +46,7 @@ Thumbs.db
 downloaded_profiles/
 profile_pics/
 *.jpg
+!frontend/public/landing-background.jpg
 *.jpeg
 *.png
 *.gif

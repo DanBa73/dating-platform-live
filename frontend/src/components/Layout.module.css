@@ -9,7 +9,7 @@
 
 /* Klasse für den Bild-Hintergrund */
 .backgroundImage {
-  background-image: url('/landing-background.jpg');
+  background-image: url('landing-background.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
