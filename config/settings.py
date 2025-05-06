@@ -130,9 +130,15 @@ ACCOUNT_FORMS = {
 ACCOUNT_ADAPTER = 'accounts.adapter.CustomAccountAdapter'
 
 # CORS settings (Anpassen für Produktion!)
-# Lese aus Env Var oder setze sinnvolle Defaults
-CORS_ALLOWED_ORIGINS_STRING = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:5173,http://127.0.0.1:5173')
-CORS_ALLOWED_ORIGINS = [origin.strip() for origin in CORS_ALLOWED_ORIGINS_STRING.split(',') if origin.strip()]
+# TEMPORÄR: Direkte Definition der erlaubten Origins statt Umgebungsvariablen
+# CORS_ALLOWED_ORIGINS_STRING = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:5173,http://127.0.0.1:5173')
+# CORS_ALLOWED_ORIGINS = [origin.strip() for origin in CORS_ALLOWED_ORIGINS_STRING.split(',') if origin.strip()]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://flirtundtreffen.onrender.com",
+]
+
 # Füge Render-URL und Custom Domain hinzu, wenn nicht schon über Env Var gesetzt
 render_hostname = os.getenv('RENDER_EXTERNAL_HOSTNAME') # Render setzt diese automatisch
 if render_hostname and render_hostname not in ALLOWED_HOSTS:
@@ -143,8 +149,14 @@ if render_hostname and render_hostname not in ALLOWED_HOSTS:
 #      CSRF_TRUSTED_ORIGINS.append(f"https://{render_hostname}")
 
 # Vertrauenswürdige Origins für CSRF (wichtig für Formulare/Logins)
-CSRF_TRUSTED_ORIGINS_STRING = os.getenv('CSRF_TRUSTED_ORIGINS', 'http://localhost:5173,http://127.0.0.1:5173')
-CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in CSRF_TRUSTED_ORIGINS_STRING.split(',') if origin.strip()]
+# TEMPORÄR: Direkte Definition der vertrauenswürdigen Origins statt Umgebungsvariablen
+# CSRF_TRUSTED_ORIGINS_STRING = os.getenv('CSRF_TRUSTED_ORIGINS', 'http://localhost:5173,http://127.0.0.1:5173')
+# CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in CSRF_TRUSTED_ORIGINS_STRING.split(',') if origin.strip()]
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://flirtundtreffen.onrender.com",
+]
 # Füge Render-URL und Custom Domain hinzu
 # if render_hostname and f"https://{render_hostname}" not in CSRF_TRUSTED_ORIGINS:
 #      CSRF_TRUSTED_ORIGINS.append(f"https://{render_hostname}")
