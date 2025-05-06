@@ -130,19 +130,41 @@ ACCOUNT_FORMS = {
 ACCOUNT_ADAPTER = 'accounts.adapter.CustomAccountAdapter'
 
 # CORS settings (Anpassen für Produktion!)
-# TEMPORÄR: Direkte Definition der erlaubten Origins statt Umgebungsvariablen
-# CORS_ALLOWED_ORIGINS_STRING = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:5173,http://127.0.0.1:5173')
-# CORS_ALLOWED_ORIGINS = [origin.strip() for origin in CORS_ALLOWED_ORIGINS_STRING.split(',') if origin.strip()]
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "https://flirtundtreffen.onrender.com",
-]
+# TEMPORÄR: ALLE Origins, Methoden und Header erlauben für Diagnose
+# WARNUNG: Dies ist nur zum Testen und unsicher!
+
+# Erlaube alle Origins (neuere Version von django-cors-headers)
+CORS_ALLOW_ALL_ORIGINS = True
+# Fallback für ältere Versionen
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Wichtig für Authentifizierung (Login)
 CORS_ALLOW_CREDENTIALS = True
 
-# Erlaubte HTTP-Methoden für CORS
+# Auskommentiert, da wir jetzt alle Origins erlauben
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:5173",
+#     "http://127.0.0.1:5173",
+#     "https://flirtundtreffen.onrender.com",
+# ]
+
+# Erlaube alle Header
+CORS_ALLOW_HEADERS = ['*']
+
+# Auskommentiert, da wir jetzt alle Header erlauben
+# CORS_ALLOW_HEADERS = [
+#     "accept",
+#     "accept-encoding",
+#     "authorization",
+#     "content-type",
+#     "dnt",
+#     "origin",
+#     "user-agent",
+#     "x-csrftoken",
+#     "x-requested-with",
+# ]
+
+# Behalte die Methoden bei, da es keine CORS_ALLOW_ALL_METHODS gibt
 CORS_ALLOW_METHODS = [
     "DELETE",
     "GET",
@@ -150,19 +172,6 @@ CORS_ALLOW_METHODS = [
     "PATCH",
     "POST",
     "PUT",
-]
-
-# Erlaubte HTTP-Header für CORS
-CORS_ALLOW_HEADERS = [
-    "accept",
-    "accept-encoding",
-    "authorization",
-    "content-type",
-    "dnt",
-    "origin",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
 ]
 
 # Dauer der Zwischenspeicherung von Preflight-Ergebnissen (in Sekunden)
