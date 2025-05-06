@@ -54,6 +54,21 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'config.urls'
 
+# Static files & Media files - VOR TEMPLATES definieren, damit STATIC_ROOT verfügbar ist
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles' # HINZUGEFÜGT für collectstatic
+
+# --- NEU: Pfad zum React Build-Ordner ---
+STATICFILES_DIRS = [
+    BASE_DIR / 'frontend/dist',
+]
+# --- ENDE NEU ---
+
+# Whitenoise Konfiguration für statische Dateien direkt über Gunicorn/Django
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 TEMPLATES = [ {
     'BACKEND': 'django.template.backends.django.DjangoTemplates',
     'DIRS': [STATIC_ROOT],
@@ -96,21 +111,6 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
-
-# Static files & Media files
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles' # HINZUGEFÜGT für collectstatic
-
-# --- NEU: Pfad zum React Build-Ordner ---
-STATICFILES_DIRS = [
-    BASE_DIR / 'frontend/dist',
-]
-# --- ENDE NEU ---
-
-# Whitenoise Konfiguration für statische Dateien direkt über Gunicorn/Django
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
