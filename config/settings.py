@@ -139,6 +139,35 @@ CORS_ALLOWED_ORIGINS = [
     "https://flirtundtreffen.onrender.com",
 ]
 
+# Wichtig für Authentifizierung (Login)
+CORS_ALLOW_CREDENTIALS = True
+
+# Erlaubte HTTP-Methoden für CORS
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+
+# Erlaubte HTTP-Header für CORS
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
+
+# Dauer der Zwischenspeicherung von Preflight-Ergebnissen (in Sekunden)
+CORS_PREFLIGHT_MAX_AGE = 86400  # 24 Stunden
+
 # Füge Render-URL und Custom Domain hinzu, wenn nicht schon über Env Var gesetzt
 render_hostname = os.getenv('RENDER_EXTERNAL_HOSTNAME') # Render setzt diese automatisch
 if render_hostname and render_hostname not in ALLOWED_HOSTS:
